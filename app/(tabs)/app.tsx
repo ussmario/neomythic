@@ -1,7 +1,8 @@
 import React from "react";
+import { StatusBar } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import CaptureSimulator from "../../src/screens/CaptureSimulator";
-import { StatusBar } from "react-native/Libraries/Components/StatusBar/StatusBar";
+
 
 export default function App() {
   return (
