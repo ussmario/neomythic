@@ -1,0 +1,3 @@
+ck = checkout
+co = commit
+st = status
