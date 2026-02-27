@@ -38,3 +38,12 @@ export function calculateCaptureChance(input: CaptureInput) {
 
   return Math.min(chance, 1);
 }
+
+// Add a small helper for MVP testing sliders
+export function captureFormulaMVP(hp: number, precision: number, element: string) {
+  const base = 50; // base %
+  const hpFactor = (100 - hp) / 100;
+  const precisionFactor = precision / 100;
+  const elementFactor = element === "Fire" ? 1.1 : 1; // demo bonus
+  return Math.round(base * hpFactor * precisionFactor * elementFactor);
+}
