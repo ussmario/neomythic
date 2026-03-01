@@ -3,9 +3,9 @@ export const elements = {
   Plant: { strong: "Water", weak: "Fire" },
   Water: { strong: "Fire", weak: "Plant" },
 
-  Earth: { strong: "Air", weak: "Electric" },
-  Air: { strong: "Electric", weak: "Earth" },
-  Electric: { strong: "Earth", weak: "Air" },
+  Earth: { strong: "Electric", weak: "Air" },
+  Electric: { strong: "Air", weak: "Earth" },
+  Air: { strong: "Earth", weak: "Electric" },
 
   Light: { strong: "Dark", weak: "Psy" },
   Dark: { strong: "Psy", weak: "Light" },
