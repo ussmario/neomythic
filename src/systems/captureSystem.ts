@@ -25,10 +25,10 @@ export function captureProbability(input: CaptureInput) {
 //trinity reference from imports is used to getElementMultiplier to return the elementMultiplier from the trinity table
 function getElementMultiplier(attacker: string, defender: string) {
   const data = elements[attacker as keyof typeof elements];
-
+//this is a flat boost to ur skill score so it should not be overly impactful. just a slight boost or detriment to capture. remember that this is not a battle
   if (!data) return 1;
-  if (data.strong === defender) return 1.5;
-  if (data.weak === defender) return 0.5;
+  if (data.strong === defender) return 1.09;
+  if (data.weak === defender) return 0.85;
 
   return 1;
 }
@@ -51,6 +51,18 @@ export function computeHealthScore(HPPercent: number) {
   return Math.max(computeHealth, 0.01);
 }
 
+const chance = captureProbability({
+  tierMultiplier: 1.0,
+  grammarMultiplier: 1.0,
+  precision: 0.91,
+  attackerElement: "Fire",
+  defenderElement: "Plant",
+  HPPercent: 0.01,
+  resistance: 1.0,
+  runeMastery: 1.0,
+});
+
+console.log("captureProbability:", chance, "or", (chance * 100).toFixed(2) + "%");
 
 
 
