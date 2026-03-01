@@ -1,36 +1,38 @@
 import React from "react";
 import { View, Text, Button } from "react-native";
-import { calculateCaptureChance } from "../systems/captureSystem";
+import { captureProbability } from "../systems/captureSystem";
 import { useColorScheme } from "@/hooks/use-color-scheme";
 import { Colors } from "@/constants/theme";
 import Slider from '@react-native-community/slider'; // or Expo’s Slider
 import { Picker } from '@react-native-picker/picker';
-import { captureFormulaMVP } from '@/src/systems/captureSystem';
+//import { captureFormulaMVP } from '@/src/systems/captureSystem';
 
 export default function CaptureSimulator() {
   const colorScheme = useColorScheme();
   const theme = Colors[colorScheme ?? "light"];
-  const chance = calculateCaptureChance({
-    tierMultiplier: 1.4,
-    grammarMultiplier: 1,
+  const chance = captureProbability({
+    tierMultiplier: 1.02,
+    grammarMultiplier: 1.03,
     precision: 0.82,
     attackerElement: "Fire",
     defenderElement: "Plant",
-    currentHP: 20,
-    resistance: 1
+    HPPercent: 0.07,
+    resistance: 1.05,
+    runeMastery: 1.01,
   });
-  const [currentHP, setCurrentHP] = React.useState(100);
+
+  const [HPPercent, setHPPercent] = React.useState(180);// 0–100%
   const [precision, setPrecision] = React.useState(50); // 0–100%
   const [selectedElement, setSelectedElement] = React.useState('Fire');
 
   return (
     <View style={{ padding: 40, backgroundColor: theme.background, flex: 1,}}>
-      <Text style={{ color: theme.text }}>Monster HP: {currentHP}</Text>
+      <Text style={{ color: theme.text }}>Monster HP: {HPPercent}%</Text>
       <Slider
         minimumValue={0}
         maximumValue={100}
-        value={currentHP}
-        onValueChange={setCurrentHP}
+        value={HPPercent}
+        onValueChange={setHPPercent}
         minimumTrackTintColor={theme.tint}
         maximumTrackTintColor="#888"
       />
@@ -61,11 +63,13 @@ export default function CaptureSimulator() {
         <Picker.Item label="Dark" value="Dark" />
         <Picker.Item label="Psy" value="Psy" />
       </Picker>
-      <Text style={{ color: theme.text }}>
-        Capture Chance: {captureFormulaMVP(currentHP, precision, selectedElement)}%
-      </Text>
+
       <Text style={{ color: theme.text }}>Thorn Sprout Capture Test</Text>
       <Text style={{ color: theme.text }}>Chance: {(chance * 100).toFixed(2)}%</Text>
     </View>
   );
 }
+
+{/* <Text style={{ color: theme.text }}>
+  Capture Chance: {captureFormulaMVP(HPPercent, precision, selectedElement)}%
+</Text> */}
