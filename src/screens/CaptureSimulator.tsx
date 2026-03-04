@@ -20,8 +20,8 @@ export default function CaptureSimulator() {
   return (
     <View style={{ padding: 40, backgroundColor: theme.background, flex: 1 }}>
 
-      <Text style={{ color: theme.text }}><strong>Thorn Sprout Capture Test</strong></Text>
-<br/>
+      <Text style={{ color: theme.text, fontWeight: "bold" }}>Thorn Sprout Capture Test</Text>
+
       <Text style={{ color: theme.text }}>Tier Multiplier: {(tierMultiplier).toFixed(2)}</Text>
       <Slider
         minimumValue={1.00}
