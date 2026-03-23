@@ -1,21 +1,52 @@
-import React from "react";
-import { View, Text, Button } from "react-native";
-import { captureProbability } from "../systems/captureSystem";
+import { useEffect, useState } from "react";
+import { View, Text } from "react-native";
+import { captureProbability } from "../systems/capture/captureSystem";
 import { useColorScheme } from "@/hooks/use-color-scheme";
 import { Colors } from "@/constants/theme";
-import Slider from '@react-native-community/slider'; // or Expo’s Slider
+import Slider from '@react-native-community/slider';
 import { Picker } from '@react-native-picker/picker';
+import { setCaptureSettings } from "../systems/capture/captureSettings";
+import { loadGrimoire } from "../game/grimoire/grimoirePersistence"
+import { getGrimoire } from "../game/grimoire/grimoireStore";
+import { loadQueue } from "../systems/encounter/echoQueuePersistence";
 
 export default function CaptureSimulator() {
   const colorScheme = useColorScheme();
   const theme = Colors[colorScheme ?? "light"];
-  const [tierMultiplier, setTierMultiplier] = React.useState(1.00);//1-1.07 for now
-  const [grammarMultiplier, setGrammarMultiplier] = React.useState(1.00);//1-1.05 for now
-  const [precision, setPrecision] = React.useState(50); // 0–100%
-  const [selectedElement, setSelectedElement] = React.useState('Fire');
-  const [HPPercent, setHPPercent] = React.useState(100);// 1–100%
-  const [resistance, setResistance] = React.useState(1.00);//1-1.05 for now
-  const [runeMastery, setRuneMastery] = React.useState(1.00);//1-1.05 for now
+  const [tierMultiplier, setTierMultiplier] = useState(1.00);//1-1.07 for now
+  const [grammarMultiplier, setGrammarMultiplier] = useState(1.00);//1-1.05 for now
+  const [precision, setPrecision] = useState(100); // 0–100%
+  const [selectedElement, setSelectedElement] = useState('Fire');
+  const [HPPercent, setHPPercent] = useState(1);// 1–100%
+  const [resistance, setResistance] = useState(1.00);//1-1.05 for now
+  const [runeMastery, setRuneMastery] = useState(1.00);//1-1.05 for now
+
+  useEffect(() => {
+    loadGrimoire(),
+    loadQueue()
+  }, [])
+
+  useEffect(() => {
+    setCaptureSettings({
+      tierMultiplier,
+      grammarMultiplier,
+      precision: precision / 100,
+      attackerElement: selectedElement,
+      defenderElement: "Plant",
+      HPPercent: HPPercent / 100,
+      resistance,
+      runeMastery
+    })
+  }, [
+    tierMultiplier,
+    grammarMultiplier,
+    precision,
+    selectedElement,
+    HPPercent,
+    resistance,
+    runeMastery
+  ])
+  console.log("Grimoire on load:", getGrimoire())
 
   return (
     <View style={{ padding: 40, backgroundColor: theme.background, flex: 1 }}>
@@ -69,7 +100,7 @@ export default function CaptureSimulator() {
         <Picker.Item label="Psy" value="Psy" />
       </Picker>
 
-      <Text style={{ color: theme.text }}>Monster HP: {(HPPercent / 100 * 100).toFixed(2)}%</Text>
+      <Text style={{ color: theme.text }}>Monster HP: {(HPPercent).toFixed(2)}%</Text>
       <Slider
         minimumValue={1}
         maximumValue={100}
